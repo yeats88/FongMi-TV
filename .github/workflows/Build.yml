@@ -1,0 +1,35 @@
+name: Build and Publish App
+
+on:
+  push:
+    branches:
+      - main # 或者是你的主分支名
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+      
+    - name: Setup Java
+      uses: actions/setup-java@v2
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Build with Gradle (Android)
+      run: ./gradlew assembleRelease
+      
+ #   - name: Sign APK (Android)
+      # 这里需要你自己的密钥库文件和密码
+  #    run: |
+  #      jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${{ secrets.KEYSTORE_PATH }} app/build/outputs/apk/release/app-release-unsigned.apk alias_name
+  #      zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app-release-signed.apk
+      
+    - name: Upload APK to Release (Android)
+      uses: actions/upload-artifact@v2
+      with:
+        name: apk
+        path: app-release-signed.apk
