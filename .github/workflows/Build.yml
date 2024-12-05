@@ -20,8 +20,19 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
 
-    - name: Build with Gradle (Android)
-      run: ./gradlew assembleRelease
+    - name: Build With Gradle
+      run: |
+        chmod +x gradlew
+        ./gradlew assembleRelease --build-cache --parallel --daemon --warning-mode all
+    - name: Prepare App
+      run: |
+        mkdir -p ${{ github.workspace }}/apk/
+        for file in $(find ${{ github.workspace }} -name "*.apk"); do
+          mv "$file" ${{ github.workspace }}/apk/
+        done
+
+ #   - name: Build with Gradle (Android)
+#      run: ./gradlew assembleRelease
       
  #   - name: Sign APK (Android)
       # 这里需要你自己的密钥库文件和密码
