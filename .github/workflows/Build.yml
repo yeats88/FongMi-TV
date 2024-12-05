@@ -30,7 +30,7 @@ jobs:
   #      zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app-release-signed.apk
       
     - name: Upload APK to Release (Android)
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: apk
         path: app-release-signed.apk
